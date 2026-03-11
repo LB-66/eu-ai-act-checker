@@ -160,7 +160,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; 
     <div class="sb">
       <div class="sb-lbl">Clé API Anthropic</div>
       <div class="api-row">
-        <input type="password" id="apikey" placeholder="sk-ant-api...">
+        <input type="password" id="apikey" placeholder="gsk_...">
         <button class="btn-eye" onclick="toggleKey()">afficher</button>
       </div>
       <div class="api-hint" id="api-hint">Entrez votre clé pour activer le checker</div>
@@ -269,7 +269,7 @@ function toggleKey() {
 }
 document.getElementById('apikey').addEventListener('input',function(){
   const h=document.getElementById('api-hint');
-  if(this.value.startsWith('sk-ant-api')){h.textContent='Clé reconnue';h.className='api-hint ok';}
+  if(this.value.startsWith('gsk_')){h.textContent='Clé Groq reconnue';h.className='api-hint ok';}
   else if(this.value.length){h.textContent='Format inattendu';h.className='api-hint err';}
   else{h.textContent='Entrez votre clé pour activer le checker';h.className='api-hint';}
 });
@@ -364,14 +364,14 @@ Réponds en français. Sois précis et orienté solutions.`;
 
   history.push({role:'user',content:text});
   try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system,messages:history})
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:1500,messages:[{role:'system',content:system},...history]})
     });
     const data=await res.json();
     if(data.error)throw new Error(data.error.message);
-    const reply=data.content[0].text;
+    const reply=data.choices[0].message.content;
     history.push({role:'assistant',content:reply});
     rmTyping();addMsg('assistant',reply,retrieved);
   } catch(err){
