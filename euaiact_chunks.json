@@ -1,0 +1,266 @@
+[
+  {
+    "id": "art1",
+    "article": "Article 1",
+    "titre": "Objet et champ d'application",
+    "chapitre": "Chapitre I — Dispositions générales",
+    "tags": ["champ application", "objet", "règlement", "IA", "système IA"],
+    "texte": "Le présent règlement établit un cadre juridique uniforme pour le développement, la mise sur le marché, la mise en service et l'utilisation de systèmes d'intelligence artificielle (IA) dans l'Union. Il vise à garantir la sécurité et le respect des droits fondamentaux, à promouvoir l'adoption d'une IA digne de confiance."
+  },
+  {
+    "id": "art3",
+    "article": "Article 3",
+    "titre": "Définitions",
+    "chapitre": "Chapitre I — Dispositions générales",
+    "tags": ["définition", "système IA", "fournisseur", "déployeur", "opérateur", "utilisateur professionnel"],
+    "texte": "Aux fins du présent règlement, on entend par: 'système d'IA': un système automatisé conçu pour fonctionner à différents niveaux d'autonomie et capable, pour des objectifs explicites ou implicites, de générer des résultats tels que des prévisions, des recommandations, des décisions ou du contenu qui influencent les environnements réels ou virtuels; 'fournisseur': une personne physique ou morale qui développe ou fait développer un système d'IA en vue de le mettre sur le marché; 'déployeur': une personne physique ou morale qui utilise un système d'IA sous sa propre responsabilité dans un contexte professionnel; 'risque élevé': un système d'IA classé comme présentant un risque élevé conformément à l'article 6."
+  },
+  {
+    "id": "art5",
+    "article": "Article 5",
+    "titre": "Pratiques d'IA interdites",
+    "chapitre": "Chapitre II — Pratiques interdites",
+    "tags": ["interdit", "manipulation", "notation sociale", "scoring social", "vulnérabilité", "identification biométrique", "temps réel", "espace public", "subliminal", "inacceptable"],
+    "texte": "Sont interdits: (a) les systèmes d'IA utilisant des techniques subliminales agissant à l'insu d'une personne pour altérer son comportement de manière à causer un préjudice; (b) les systèmes exploitant les vulnérabilités d'un groupe spécifique en raison de l'âge, du handicap ou de la situation sociale; (c) les systèmes d'évaluation ou de classification des personnes physiques par les autorités publiques (notation sociale / social scoring); (d) l'identification biométrique à distance en temps réel dans les espaces accessibles au public à des fins répressives, sauf exceptions strictement encadrées; (e) les systèmes d'inférence des émotions sur le lieu de travail ou dans les établissements d'enseignement; (f) la catégorisation biométrique révélant des données sensibles (origine raciale, opinions politiques, croyances religieuses, vie sexuelle)."
+  },
+  {
+    "id": "art6",
+    "article": "Article 6",
+    "titre": "Classification des systèmes d'IA à haut risque",
+    "chapitre": "Chapitre III — Systèmes d'IA à haut risque",
+    "tags": ["haut risque", "classification", "annexe III", "risque élevé", "catégories"],
+    "texte": "Un système d'IA est classé à haut risque s'il est: (1) un composant de sécurité d'un produit soumis à la législation de l'Union listée à l'annexe I; (2) utilisé dans l'un des domaines listés à l'annexe III. La classification haut risque s'applique notamment à: l'infrastructure critique (énergie, eau, transport), l'enseignement et la formation professionnelle, l'emploi et gestion des travailleurs, les services essentiels (crédit, assurance), les services répressifs, la gestion des migrations, l'administration de la justice."
+  },
+  {
+    "id": "art6_rh",
+    "article": "Article 6 + Annexe III §4",
+    "titre": "Systèmes d'IA à haut risque — Emploi et RH",
+    "chapitre": "Chapitre III — Systèmes d'IA à haut risque",
+    "tags": ["haut risque", "recrutement", "RH", "emploi", "ressources humaines", "CV", "candidat", "promotion", "licenciement", "gestion travailleurs", "surveillance", "performance"],
+    "texte": "Sont classés à haut risque (Annexe III, point 4) les systèmes d'IA utilisés pour: (a) le recrutement ou la sélection de personnes physiques, notamment pour analyser et filtrer les candidatures ou évaluer les candidats; (b) prendre des décisions affectant les conditions de travail, les promotions, les licenciements; (c) surveiller et évaluer les performances et le comportement des personnes dans le cadre de relations de travail. Ces systèmes sont soumis à l'intégralité des obligations du Chapitre III Section 2 (articles 9 à 15)."
+  },
+  {
+    "id": "art6_credit",
+    "article": "Article 6 + Annexe III §5",
+    "titre": "Systèmes d'IA à haut risque — Services financiers",
+    "chapitre": "Chapitre III — Systèmes d'IA à haut risque",
+    "tags": ["haut risque", "crédit", "assurance", "scoring crédit", "prêt", "banque", "finance", "solvabilité", "score"],
+    "texte": "Sont classés à haut risque (Annexe III, point 5) les systèmes d'IA utilisés par les établissements de crédit pour évaluer la solvabilité des personnes physiques, ou utilisés à des fins d'évaluation des risques et de tarification dans les assurances vie et santé. Ces systèmes peuvent conditionner l'accès à des ressources et services essentiels."
+  },
+  {
+    "id": "art6_education",
+    "article": "Article 6 + Annexe III §3",
+    "titre": "Systèmes d'IA à haut risque — Éducation",
+    "chapitre": "Chapitre III — Systèmes d'IA à haut risque",
+    "tags": ["haut risque", "éducation", "formation", "enseignement", "étudiant", "examen", "évaluation", "admission", "diplôme"],
+    "texte": "Sont classés à haut risque (Annexe III, point 3) les systèmes d'IA utilisés pour: (a) déterminer l'accès à des établissements d'enseignement; (b) évaluer les résultats aux examens; (c) surveiller et détecter les comportements interdits lors d'examens. L'impact sur les trajectoires professionnelles et éducatives justifie cette classification."
+  },
+  {
+    "id": "art9",
+    "article": "Article 9",
+    "titre": "Système de gestion des risques",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["gestion des risques", "risk management", "évaluation", "haut risque", "obligation", "processus", "conformité"],
+    "texte": "Les fournisseurs de systèmes d'IA à haut risque doivent établir, mettre en œuvre, documenter et maintenir un système de gestion des risques tout au long du cycle de vie. Ce système doit: (a) identifier et analyser les risques connus et raisonnablement prévisibles; (b) estimer et évaluer les risques pouvant survenir lors de l'utilisation conforme à sa destination; (c) évaluer les risques résultant d'une utilisation raisonnablement prévisible; (d) adopter des mesures appropriées de gestion des risques. Les mesures de gestion des risques doivent garantir que les risques résiduels sont jugés acceptables."
+  },
+  {
+    "id": "art10",
+    "article": "Article 10",
+    "titre": "Données et gouvernance des données",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["données", "qualité des données", "biais", "entraînement", "gouvernance", "dataset", "données d'entraînement", "RGPD", "données personnelles"],
+    "texte": "Les systèmes d'IA à haut risque utilisant des techniques entraînées sur des données doivent satisfaire à des exigences de qualité: (a) pratiques de gouvernance des données appropriées — ensembles de données d'entraînement, de validation et de test pertinents, représentatifs, exempts d'erreurs et complets; (b) prise en compte des caractéristiques ou éléments susceptibles de générer des biais dans les données; (c) les données peuvent contenir des données personnelles à condition de respecter le RGPD et les dispositions pertinentes. Les biais doivent être identifiés, évalués et traités."
+  },
+  {
+    "id": "art11",
+    "article": "Article 11",
+    "titre": "Documentation technique",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["documentation", "technique", "obligation", "annexe IV", "transparence", "haut risque"],
+    "texte": "Les fournisseurs de systèmes d'IA à haut risque doivent établir et maintenir une documentation technique conformément à l'Annexe IV. Cette documentation doit être établie avant la mise sur le marché et maintenue à jour. Elle doit contenir: description générale du système, description détaillée des éléments du système, informations sur les données d'entraînement, description des capacités et des limites de performance, résultats de l'évaluation des risques, description des mesures de contrôle humain, liste des normes harmonisées appliquées."
+  },
+  {
+    "id": "art12",
+    "article": "Article 12",
+    "titre": "Tenue de registres (logging)",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["registre", "logs", "journalisation", "traçabilité", "audit", "haut risque", "enregistrement"],
+    "texte": "Les systèmes d'IA à haut risque doivent être capables d'enregistrer automatiquement les événements (logs) tout au long de leur durée de vie. Ces capacités de journalisation doivent permettre: la surveillance du fonctionnement, la détection de situations pouvant présenter un risque, les enquêtes post-marché. Les logs doivent être conservés pendant une durée appropriée. Pour les systèmes utilisés par les autorités publiques, la période minimale de conservation est de 6 mois."
+  },
+  {
+    "id": "art13",
+    "article": "Article 13",
+    "titre": "Transparence et information des déployeurs",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["transparence", "information", "déployeur", "notice", "instructions", "haut risque", "explicabilité"],
+    "texte": "Les systèmes d'IA à haut risque doivent être conçus de manière à permettre aux déployeurs d'interpréter les résultats du système et de les utiliser de manière appropriée. Les fournisseurs doivent joindre une notice d'utilisation contenant: identité et coordonnées du fournisseur, caractéristiques et capacités du système, niveau de précision et métriques de performance, circonstances pouvant entraîner des risques, modifications pouvant affecter la conformité, mesures de contrôle humain, durée de vie et maintenance."
+  },
+  {
+    "id": "art14",
+    "article": "Article 14",
+    "titre": "Contrôle humain (Human Oversight)",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["contrôle humain", "human oversight", "supervision", "intervention", "décision humaine", "haut risque", "override"],
+    "texte": "Les systèmes d'IA à haut risque doivent être conçus de manière à pouvoir être efficacement surveillés par des personnes physiques pendant leur utilisation. Des mesures appropriées doivent être intégrées pour permettre: (a) aux personnes physiques de comprendre les capacités et limites du système; (b) d'identifier les dysfonctionnements; (c) d'interpréter les résultats; (d) de décider de ne pas utiliser le système ou d'ignorer/infirmer ses résultats; (e) d'interrompre le fonctionnement du système. La décision finale doit rester humaine pour les systèmes à haut risque."
+  },
+  {
+    "id": "art15",
+    "article": "Article 15",
+    "titre": "Précision, robustesse et cybersécurité",
+    "chapitre": "Chapitre III Section 2 — Obligations systèmes haut risque",
+    "tags": ["précision", "robustesse", "cybersécurité", "sécurité", "performance", "haut risque", "résilience"],
+    "texte": "Les systèmes d'IA à haut risque doivent atteindre un niveau approprié de précision, de robustesse et de cybersécurité, et fonctionner de manière cohérente à ces égards tout au long de leur cycle de vie. Les niveaux de précision doivent être déclarés dans la notice d'utilisation. Les systèmes doivent être resilients face aux tentatives de manipulation par des tiers. Des mesures techniques et organisationnelles de cybersécurité appropriées doivent être mises en place."
+  },
+  {
+    "id": "art16",
+    "article": "Article 16",
+    "titre": "Obligations des fournisseurs de systèmes à haut risque",
+    "chapitre": "Chapitre III Section 3 — Obligations des fournisseurs",
+    "tags": ["fournisseur", "obligations", "haut risque", "marquage CE", "enregistrement", "déclaration conformité"],
+    "texte": "Les fournisseurs de systèmes d'IA à haut risque doivent: (a) s'assurer que leurs systèmes sont conformes aux articles 9 à 15; (b) apposer le marquage CE; (c) établir une déclaration UE de conformité; (d) respecter les obligations d'enregistrement (article 51); (e) prendre les mesures correctives nécessaires; (f) informer les autorités nationales compétentes en cas de non-conformité; (g) apposer leur nom, raison sociale et adresse sur le système."
+  },
+  {
+    "id": "art17",
+    "article": "Article 17",
+    "titre": "Système de gestion de la qualité",
+    "chapitre": "Chapitre III Section 3 — Obligations des fournisseurs",
+    "tags": ["qualité", "management qualité", "QMS", "politique", "procédures", "fournisseur", "haut risque"],
+    "texte": "Les fournisseurs de systèmes d'IA à haut risque doivent mettre en place un système de gestion de la qualité. Ce système doit couvrir: stratégie de conformité réglementaire, techniques de conception et de développement, procédures de contrôle et de validation, procédures de gestion des modifications, procédures de surveillance post-commercialisation, responsabilités de la direction."
+  },
+  {
+    "id": "art26",
+    "article": "Article 26",
+    "titre": "Obligations des déployeurs de systèmes à haut risque",
+    "chapitre": "Chapitre III Section 3 — Obligations des déployeurs",
+    "tags": ["déployeur", "obligations", "haut risque", "utilisation", "entreprise", "surveillance", "évaluation impact", "FRIA"],
+    "texte": "Les déployeurs de systèmes d'IA à haut risque doivent: (a) prendre des mesures techniques et organisationnelles appropriées pour utiliser ces systèmes conformément aux instructions; (b) assurer que les personnes physiques chargées du contrôle humain possèdent les compétences, la formation et l'autorité nécessaires; (c) surveiller le fonctionnement du système et signaler les incidents; (d) conserver les logs générés automatiquement; (e) avant déploiement, réaliser une évaluation d'impact sur les droits fondamentaux (FRIA — Fundamental Rights Impact Assessment) pour les entités publiques et certains déployeurs privés."
+  },
+  {
+    "id": "art50",
+    "article": "Article 50",
+    "titre": "Obligations de transparence pour certains systèmes d'IA",
+    "chapitre": "Chapitre IV — Transparence",
+    "tags": ["transparence", "chatbot", "deepfake", "contenu synthétique", "IA générative", "obligation information", "risque limité", "watermark"],
+    "texte": "Les fournisseurs et déployeurs de certains systèmes d'IA doivent informer les utilisateurs qu'ils interagissent avec un système d'IA lorsque cela n'est pas évident: (a) les systèmes d'IA destinés à interagir directement avec des personnes (chatbots) doivent être conçus pour informer les personnes qu'elles interagissent avec un système d'IA; (b) les opérateurs de systèmes d'IA générant du contenu synthétique (deepfakes, audio/image/vidéo) doivent divulguer que le contenu a été généré artificiellement; (c) les systèmes d'IA générative doivent marquer leur contenu (watermarking machine-readable)."
+  },
+  {
+    "id": "art51",
+    "article": "Article 51",
+    "titre": "Enregistrement dans la base de données EU",
+    "chapitre": "Chapitre III Section 4 — Enregistrement",
+    "tags": ["enregistrement", "base de données", "registre", "haut risque", "obligation", "EU database"],
+    "texte": "Avant de mettre sur le marché ou en service un système d'IA à haut risque, les fournisseurs et déployeurs (pour certaines catégories) doivent enregistrer ce système dans la base de données EU établie et gérée par la Commission européenne. Les informations à enregistrer incluent: nom du fournisseur, nom commercial du système, description de l'objectif, statut du système, déclaration de conformité."
+  },
+  {
+    "id": "art53",
+    "article": "Article 53",
+    "titre": "Modèles d'IA à usage général (GPAI)",
+    "chapitre": "Chapitre V — Modèles d'IA à usage général",
+    "tags": ["GPAI", "usage général", "foundation model", "LLM", "modèle de langage", "GPT", "Claude", "Gemini", "open source"],
+    "texte": "Les fournisseurs de modèles d'IA à usage général (GPAI — General Purpose AI) doivent: (a) établir et tenir à jour la documentation technique; (b) mettre à disposition des informations et de la documentation pour les fournisseurs en aval; (c) établir une politique de respect du droit d'auteur; (d) publier un résumé des données utilisées pour l'entraînement. Pour les modèles open-source, des obligations allégées s'appliquent."
+  },
+  {
+    "id": "art55",
+    "article": "Article 55",
+    "titre": "Obligations pour les modèles GPAI à risque systémique",
+    "chapitre": "Chapitre V — Modèles d'IA à usage général",
+    "tags": ["GPAI", "risque systémique", "puissance calcul", "FLOPs", "évaluation", "incidents", "cybersécurité", "GPT-4", "Gemini Ultra"],
+    "texte": "Les fournisseurs de modèles GPAI présentant un risque systémique (dépassant 10^25 FLOPs d'entraînement ou désignés par la Commission) doivent: (a) réaliser des évaluations de modèle, y compris des tests adversariaux; (b) évaluer et atténuer les risques systémiques; (c) assurer un niveau adéquat de cybersécurité; (d) signaler les incidents graves à la Commission dans les 15 jours."
+  },
+  {
+    "id": "art62",
+    "article": "Article 62",
+    "titre": "Signalement des incidents graves",
+    "chapitre": "Chapitre VII — Gouvernance",
+    "tags": ["incident", "signalement", "accident", "dysfonctionnement grave", "autorité nationale", "obligation", "haut risque"],
+    "texte": "Les déployeurs de systèmes d'IA à haut risque doivent signaler tout incident grave ou tout dysfonctionnement grave à l'autorité nationale de surveillance compétente. La notification doit être effectuée dans les 15 jours suivant la date à laquelle le déployeur a pris connaissance de l'incident. Un incident grave désigne tout incident ayant entraîné ou susceptible d'entraîner: la mort d'une personne, des dommages graves à la santé, des atteintes graves aux droits fondamentaux, des dommages graves aux biens ou à l'environnement."
+  },
+  {
+    "id": "art70",
+    "article": "Article 70 à 72",
+    "titre": "Sanctions et amendes",
+    "chapitre": "Chapitre XII — Sanctions",
+    "tags": ["sanction", "amende", "pénalité", "infraction", "violation", "non-conformité", "pénalité financière"],
+    "texte": "Les violations du règlement EU AI Act sont passibles d'amendes: (a) violation des pratiques interdites (article 5): jusqu'à 35 millions € ou 7% du chiffre d'affaires annuel mondial; (b) non-conformité aux exigences des systèmes à haut risque: jusqu'à 15 millions € ou 3% du CA annuel mondial; (c) fourniture d'informations incorrectes ou trompeuses aux autorités: jusqu'à 7,5 millions € ou 1,5% du CA annuel mondial. Pour les PME et les startups, des plafonds proportionnels s'appliquent."
+  },
+  {
+    "id": "art101",
+    "article": "Article 101 — Calendrier d'application",
+    "titre": "Entrée en vigueur et calendrier de mise en application",
+    "chapitre": "Chapitre XIV — Dispositions finales",
+    "tags": ["calendrier", "entrée en vigueur", "date", "application", "transition", "délai", "2024", "2025", "2026"],
+    "texte": "Le règlement est entré en vigueur le 1er août 2024. Calendrier d'application progressif: (1) Août 2024: entrée en vigueur; (2) Février 2025: interdictions (article 5 pratiques interdites) applicables; (3) Août 2025: obligations pour les modèles GPAI (Chapitre V); (4) Août 2026: toutes les autres dispositions applicables, notamment les obligations pour les systèmes à haut risque (Chapitres III, IV); (5) Août 2027: obligations pour les systèmes à haut risque visés à l'Annexe I (composants de sécurité)."
+  },
+  {
+    "id": "art9_deploiement",
+    "article": "Article 26 + Considérant 79",
+    "titre": "Évaluation d'impact sur les droits fondamentaux (FRIA)",
+    "chapitre": "Chapitre III — Obligations déployeurs",
+    "tags": ["FRIA", "évaluation impact", "droits fondamentaux", "impact assessment", "déployeur", "entité publique", "banque", "assurance", "éducation"],
+    "texte": "Avant de déployer certains systèmes d'IA à haut risque, les entités publiques et certains déployeurs privés (établissements de crédit, assurances, opérateurs d'infrastructures critiques) doivent réaliser une évaluation d'impact sur les droits fondamentaux (FRIA). Cette évaluation doit documenter: description du système et de son utilisation, période et entité responsable, catégories de personnes concernées, risques identifiés pour les droits fondamentaux, mesures d'atténuation, plan de suivi."
+  },
+  {
+    "id": "risque_minimal",
+    "article": "Considérants 43-47",
+    "titre": "Systèmes d'IA à risque minimal ou nul",
+    "chapitre": "Catégories de risque",
+    "tags": ["risque minimal", "risque faible", "risque nul", "pas d'obligation", "chatbot simple", "filtres spam", "jeux vidéo", "IA recommandation"],
+    "texte": "La majorité des systèmes d'IA présentent un risque minimal ou nul et ne sont pas soumis aux obligations principales du règlement. Exemples: filtres anti-spam, systèmes de recommandation de contenu (si non classés haut risque), outils de traitement de texte, IA dans les jeux vidéo, outils de productivité IA. Ces systèmes peuvent adopter volontairement des codes de conduite. Aucune obligation réglementaire spécifique n'est imposée, mais les principes généraux de l'UE (RGPD, protection des consommateurs) restent applicables."
+  },
+  {
+    "id": "risque_limite",
+    "article": "Article 50 — Risque limité",
+    "titre": "Systèmes d'IA à risque limité — obligations de transparence",
+    "chapitre": "Chapitre IV — Transparence",
+    "tags": ["risque limité", "transparence", "chatbot", "deepfake", "contenu généré IA", "information utilisateur"],
+    "texte": "Les systèmes d'IA à risque limité sont principalement soumis à des obligations de transparence. Un système d'IA à risque limité est notamment: un chatbot ou agent conversationnel (obligation d'informer l'utilisateur qu'il interagit avec une IA), un système générant des deepfakes ou du contenu synthétique (obligation de divulgation), un système d'IA générative produisant du texte/image/audio/vidéo à grande échelle. Ces obligations sont moins contraignantes que pour les systèmes à haut risque."
+  },
+  {
+    "id": "pme_startup",
+    "article": "Articles 55, 62, 70 + Considérants 148-151",
+    "titre": "Dispositions spéciales pour les PME et startups",
+    "chapitre": "Dispositions spéciales",
+    "tags": ["PME", "startup", "petite entreprise", "TPE", "allégement", "bac à sable réglementaire", "sandbox", "facilitation"],
+    "texte": "Le règlement prévoit des dispositions spéciales pour les PME et startups: (a) accès prioritaire aux bacs à sable réglementaires (regulatory sandboxes) pour tester leurs systèmes; (b) amendes plafonnées proportionnellement pour les PME; (c) autorités nationales doivent tenir compte de la taille et de la capacité financière; (d) Commission et États membres doivent fournir une assistance technique, une documentation simplifiée et des formations. Les PME qui ne mettent pas sur le marché leurs systèmes (usage interne uniquement) bénéficient de régimes allégés."
+  },
+  {
+    "id": "ia_generative",
+    "article": "Articles 50, 53, 55",
+    "titre": "IA générative — Obligations spécifiques",
+    "chapitre": "Chapitre V — GPAI",
+    "tags": ["IA générative", "générateur de texte", "génération d'images", "LLM", "ChatGPT", "Claude", "Gemini", "Midjourney", "DALL-E", "contenu", "watermark", "transparence"],
+    "texte": "Les systèmes d'IA générative sont soumis à plusieurs niveaux d'obligations: (1) Si c'est un modèle GPAI (article 53): documentation technique, politique droit d'auteur, résumé données entraînement; (2) Si risque systémique (article 55): évaluations adversariales, gestion des risques systémiques; (3) Transparence (article 50): marquer le contenu généré (watermarking), informer les utilisateurs. Les déployeurs utilisant des LLM tiers (API OpenAI, Anthropic, Google) héritent de certaines obligations de transparence vis-à-vis de leurs utilisateurs finaux."
+  },
+  {
+    "id": "biometrie",
+    "article": "Article 5 §1(d) + Annexe III §1",
+    "titre": "Identification biométrique et systèmes d'IA biométriques",
+    "chapitre": "Pratiques interdites + Haut risque",
+    "tags": ["biométrie", "reconnaissance faciale", "identification", "vérification identité", "empreinte digitale", "iris", "voix", "surveillance", "espace public"],
+    "texte": "L'identification biométrique à distance en temps réel dans les espaces publics est interdite sauf exceptions très strictes (recherche de victimes de traite, prévention d'une menace terroriste imminente, localisation d'un suspect). Les systèmes de vérification biométrique (1:1, comme la vérification d'identité à l'aéroport) sont classés haut risque. Les systèmes de catégorisation biométrique révélant l'origine raciale, opinions politiques, croyances religieuses ou orientation sexuelle sont interdits."
+  },
+  {
+    "id": "sante",
+    "article": "Annexe I + Annexe III §2",
+    "titre": "Systèmes d'IA dans le domaine de la santé",
+    "chapitre": "Chapitre III — Haut risque",
+    "tags": ["santé", "médical", "diagnostic", "dispositif médical", "hôpital", "patient", "traitement", "médecin", "chirurgie robotique", "imagerie médicale"],
+    "texte": "Les systèmes d'IA utilisés comme dispositifs médicaux ou composants de sécurité de dispositifs médicaux sont soumis au règlement EU AI Act (Annexe I) en complément du règlement européen sur les dispositifs médicaux (MDR/IVDR). Les systèmes d'IA utilisés pour le triage, le diagnostic ou le traitement sont généralement classés haut risque. L'évaluation clinique et la gestion des risques médicaux s'appliquent cumulativement."
+  },
+  {
+    "id": "transport",
+    "article": "Annexe I + Annexe III §2",
+    "titre": "Systèmes d'IA dans le transport",
+    "chapitre": "Chapitre III — Haut risque",
+    "tags": ["transport", "véhicule autonome", "aviation", "ferroviaire", "maritime", "conduite autonome", "ADAS", "sécurité routière"],
+    "texte": "Les systèmes d'IA utilisés comme composants de sécurité dans l'infrastructure de transport (aviation civile, maritime, ferroviaire, routier) sont classés haut risque (Annexe I). Les systèmes de conduite autonome et les systèmes avancés d'aide à la conduite (ADAS) entrent dans cette catégorie. Les obligations cumulatives avec les réglementations sectorielles (EASA pour l'aviation, etc.) s'appliquent."
+  },
+  {
+    "id": "conformite_checklist",
+    "article": "Articles 9-17, 26",
+    "titre": "Checklist de conformité pour systèmes à haut risque",
+    "chapitre": "Synthèse pratique",
+    "tags": ["checklist", "conformité", "obligation", "liste", "étapes", "démarche", "audit", "plan action"],
+    "texte": "Pour être conforme avec l'EU AI Act pour un système à haut risque, une entreprise doit: (1) Classifier le système (art. 6 + Annexe III); (2) Mettre en place un système de gestion des risques (art. 9); (3) Assurer la qualité des données (art. 10); (4) Établir la documentation technique (art. 11, Annexe IV); (5) Mettre en place des capacités de logging (art. 12); (6) Garantir la transparence envers les déployeurs (art. 13); (7) Implémenter un contrôle humain (art. 14); (8) Assurer précision et robustesse (art. 15); (9) Enregistrer dans la base EU (art. 51); (10) Mettre en place un QMS (art. 17); (11) Pour les déployeurs: réaliser une FRIA si applicable (art. 26)."
+  }
+]
