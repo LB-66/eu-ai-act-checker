@@ -4,238 +4,934 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EU AI Act — Compliance Checker</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Söhne:wght@400;500;600&family=Georgia:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:       #F5F6F8;
+  --bg:       #F7F7F5;
   --surface:  #FFFFFF;
-  --border:   #E2E5EA;
-  --text:     #1A1D23;
-  --muted:    #7A8394;
-  --light:    #F0F2F5;
-  --eu-blue:  #003399;
-  --eu-blue2: #1A4FBF;
-  --eu-gold:  #C9A800;
-  --green:    #0B8A5E;
-  --amber:    #C47A00;
-  --red:      #C0392B;
-  --teal:     #0E7C74;
+  --border:   #E5E5E3;
+  --text:     #1A1A1A;
+  --muted:    #8A8A8A;
+  --light:    #F0F0EE;
+  --blue:     #1A56DB;
+  --blue-lt:  #EEF3FF;
+  --green:    #0F7B55;
+  --green-lt: #ECFDF5;
+  --amber:    #B45309;
+  --amber-lt: #FFFBEB;
+  --red:      #B91C1C;
+  --red-lt:   #FEF2F2;
+  --radius:   10px;
 }
+
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; height:100vh; overflow:hidden; display:flex; flex-direction:column; font-size:14px; }
 
-/* HEADER */
-#header { flex-shrink:0; height:52px; background:var(--eu-blue); display:flex; align-items:center; padding:0 24px; gap:14px; }
-.hd-stars { font-size:10px; letter-spacing:-1px; color:#C9A800; }
-.hd-sep { width:1px; height:20px; background:rgba(255,255,255,0.2); }
-.hd-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#fff; letter-spacing:0.04em; text-transform:uppercase; }
-.hd-right { margin-left:auto; display:flex; gap:8px; }
-.pill { padding:3px 10px; border-radius:20px; font-size:10px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; }
-.pill-w { background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.9); border:1px solid rgba(255,255,255,0.2); }
-.pill-g { background:rgba(201,168,0,0.2); color:#C9A800; border:1px solid rgba(201,168,0,0.3); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-/* LAYOUT */
-#main { display:flex; flex:1; overflow:hidden; }
+/* ── HEADER ── */
+#header {
+  flex-shrink: 0;
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 0;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-flag {
+  width: 28px;
+  height: 20px;
+  background: #003399;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.logo-flag svg { width: 18px; height: 18px; }
+.logo-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.logo-text span { color: var(--blue); }
 
-/* SIDEBAR */
-#sidebar { width:256px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow-y:auto; }
-#sidebar::-webkit-scrollbar { width:3px; }
-#sidebar::-webkit-scrollbar-thumb { background:var(--border); }
-.sb { padding:14px 16px; border-bottom:1px solid var(--border); }
-.sb-lbl { font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:9px; }
+/* Tabs */
+#tabs {
+  display: flex;
+  gap: 2px;
+  margin: 0 auto;
+  background: var(--light);
+  border-radius: 8px;
+  padding: 3px;
+}
+.tab {
+  padding: 6px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--muted);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.tab.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.tab:hover:not(.active) { color: var(--text); }
 
-/* API */
-.api-row { display:flex; gap:5px; }
-#apikey { flex:1; background:var(--light); border:1px solid var(--border); border-radius:6px; padding:7px 9px; color:var(--text); font-family:'Inter',sans-serif; font-size:11px; outline:none; transition:border-color .15s; }
-#apikey:focus { border-color:var(--eu-blue2); }
-#apikey::placeholder { color:var(--muted); }
-.btn-eye { background:var(--light); border:1px solid var(--border); border-radius:6px; padding:0 9px; cursor:pointer; color:var(--muted); font-size:11px; transition:all .15s; }
-.btn-eye:hover { border-color:var(--eu-blue2); color:var(--eu-blue); }
-.api-hint { margin-top:5px; font-size:10px; color:var(--muted); }
-.api-hint.ok { color:var(--green); }
-.api-hint.err { color:var(--red); }
+.hd-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 200px;
+  justify-content: flex-end;
+}
+.badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--blue-lt);
+  color: var(--blue);
+  border: 1px solid #C7D7F7;
+}
 
-/* Risk rows */
-.risk-rows { display:flex; flex-direction:column; gap:3px; }
-.risk-row { display:flex; align-items:center; gap:8px; padding:7px 8px; border-radius:5px; cursor:pointer; transition:background .15s; border:1px solid transparent; }
-.risk-row:hover { background:var(--light); border-color:var(--border); }
-.rdot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.rname { font-size:12px; color:var(--text); flex:1; }
-.rart { font-size:10px; color:var(--muted); }
+/* ── PAGES ── */
+#page-eval, #page-chat { display: none; flex: 1; overflow: hidden; }
+#page-eval.active, #page-chat.active { display: flex; }
+
+/* ═══════════════════════════════════════
+   PAGE ÉVALUATION
+═══════════════════════════════════════ */
+#page-eval { gap: 0; }
+
+/* Left panel — form */
+#eval-form-panel {
+  width: 420px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+#eval-form-panel::-webkit-scrollbar { width: 3px; }
+#eval-form-panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+.form-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.form-header h2 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.form-header p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.form-body { padding: 20px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.01em; }
+.field-hint { font-size: 11px; color: var(--muted); margin-top: -3px; }
+
+select, input[type="text"], textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+}
+select:focus, input[type="text"]:focus, textarea:focus {
+  border-color: var(--blue);
+  background: var(--surface);
+}
+select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+textarea { resize: none; line-height: 1.5; min-height: 80px; }
+
+/* Checkboxes */
+.check-group { display: flex; flex-direction: column; gap: 7px; }
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .15s;
+  font-size: 12px;
+  color: var(--text);
+}
+.check-item:hover { border-color: var(--blue); background: var(--blue-lt); }
+.check-item input { accent-color: var(--blue); width: 14px; height: 14px; cursor: pointer; }
+.check-item.checked { border-color: var(--blue); background: var(--blue-lt); }
+
+/* Submit */
+.form-footer { padding: 16px 28px 24px; }
+#btn-analyze {
+  width: 100%;
+  padding: 12px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  letter-spacing: -0.01em;
+}
+#btn-analyze:hover { background: #1447C0; }
+#btn-analyze:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+
+/* Right panel — results */
+#eval-result-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+#eval-result-panel::-webkit-scrollbar { width: 4px; }
+#eval-result-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Empty state */
+#result-empty {
+  margin: auto;
+  text-align: center;
+  max-width: 360px;
+  padding: 40px 20px;
+}
+#result-empty h3 {
+  font-family: 'Lora', serif;
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+#result-empty p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  text-align: left;
+}
+.step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--blue-lt);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* Result cards */
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.result-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.result-card-header h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.result-card-body { padding: 16px 20px; }
+
+/* Score circle */
+.score-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.score-circle-wrap { flex-shrink: 0; }
+.score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 3px solid;
+}
+.score-circle .score-num {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+.score-circle .score-lbl {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
+.score-info h3 {
+  font-family: 'Lora', serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.score-info p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* Risk badge */
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.rb-red    { background: var(--red-lt);   border:1px solid #FECACA; color:var(--red); }
+.rb-amber  { background: var(--amber-lt); border:1px solid #FDE68A; color:var(--amber); }
+.rb-teal   { background: #F0FDFA;         border:1px solid #A7F3D0; color:#0F766E; }
+.rb-green  { background: var(--green-lt); border:1px solid #A7F3D0; color:var(--green); }
+
+/* Progress bar */
+.progress-wrap { margin: 8px 0; }
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.progress-track {
+  height: 6px;
+  background: var(--light);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width .8s cubic-bezier(.4,0,.2,1);
+}
+
+/* Obligations list */
+.oblig-list { display: flex; flex-direction: column; gap: 8px; }
+.oblig-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.oblig-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.oblig-text { flex: 1; color: var(--text); }
+.oblig-art {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-lt);
+  padding: 1px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 1px;
+}
+
+/* Action plan */
+.plan-list { display: flex; flex-direction: column; gap: 8px; }
+.plan-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.plan-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.plan-content { flex: 1; }
+.plan-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.plan-desc  { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* CTA to chatbot */
+#btn-to-chat {
+  width: 100%;
+  padding: 13px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  letter-spacing: -0.01em;
+}
+#btn-to-chat:hover { background: #333; }
+
+/* Loading state */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 60px 20px;
+  margin: auto;
+}
+.loading-state p { font-size: 13px; color: var(--muted); }
+.spinner {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════
+   PAGE CHATBOT
+═══════════════════════════════════════ */
+#page-chat { flex-direction: row; }
+
+#chat-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 16px;
+  gap: 16px;
+}
+
+.cs-section h4 {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* API input */
+.api-wrap { display: flex; flex-direction: column; gap: 5px; }
+.api-row { display: flex; gap: 5px; }
+#apikey {
+  flex: 1;
+  padding: 7px 9px;
+  font-size: 11px;
+  border-radius: 6px;
+}
+.btn-eye {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 9px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11px;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-eye:hover { border-color: var(--blue); color: var(--blue); }
+.api-hint { font-size: 10px; color: var(--muted); }
+.api-hint.ok  { color: var(--green); }
+.api-hint.err { color: var(--red); }
 
 /* Quick buttons */
-.quick-rows { display:flex; flex-direction:column; gap:4px; }
-.qbtn { background:none; border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-family:'Inter',sans-serif; font-size:11px; cursor:pointer; text-align:left; line-height:1.4; transition:all .15s; }
-.qbtn:hover { background:var(--light); border-color:var(--eu-blue2); color:var(--eu-blue); }
+.qbtns { display: flex; flex-direction: column; gap: 4px; }
+.qbtn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 9px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.4;
+  transition: all .15s;
+}
+.qbtn:hover { background: var(--blue-lt); border-color: var(--blue); color: var(--blue); }
 
-/* Footer */
-.sb-foot { margin-top:auto; padding:12px 16px; font-size:10px; color:var(--muted); line-height:1.7; border-top:1px solid var(--border); }
-.sb-foot a { color:var(--eu-blue2); text-decoration:none; }
-.sb-foot a:hover { text-decoration:underline; }
+/* Context from eval */
+#eval-context-box {
+  background: var(--green-lt);
+  border: 1px solid #A7F3D0;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 11px;
+  color: var(--green);
+  line-height: 1.5;
+  display: none;
+}
+#eval-context-box strong { display: block; margin-bottom: 3px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
 
-/* CHAT */
-#chat { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-#messages { flex:1; overflow-y:auto; padding:28px 32px; display:flex; flex-direction:column; gap:16px; }
-#messages::-webkit-scrollbar { width:4px; }
-#messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.chat-foot {
+  margin-top: auto;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.chat-foot a { color: var(--blue); text-decoration: none; }
+
+/* Chat messages */
+#chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#messages::-webkit-scrollbar { width: 4px; }
+#messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* Welcome */
-#welcome { max-width:540px; margin:auto; text-align:center; padding:40px 20px; }
-#welcome h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:10px; line-height:1.3; }
-#welcome h2 span { color:var(--eu-blue2); }
-#welcome p { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:22px; }
-.chips { display:flex; flex-wrap:wrap; gap:7px; justify-content:center; }
-.chip { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 13px; font-size:12px; cursor:pointer; transition:all .15s; color:var(--text); }
-.chip:hover { border-color:var(--eu-blue2); color:var(--eu-blue); background:#EEF3FF; }
+#welcome {
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  padding: 40px 20px;
+}
+#welcome h2 {
+  font-family: 'Lora', serif;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+#welcome p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .15s;
+  color: var(--text);
+}
+.chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
 
 /* Messages */
-.msg { display:flex; gap:10px; max-width:720px; animation:in .25s ease both; }
-@keyframes in { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-.msg.user { align-self:flex-end; flex-direction:row-reverse; }
-.msg.bot  { align-self:flex-start; }
-.av { width:27px; height:27px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; margin-top:2px; font-family:'Syne',sans-serif; }
-.msg.user .av { background:var(--light); border:1px solid var(--border); color:var(--muted); }
-.msg.bot  .av { background:var(--eu-blue); color:#fff; }
-.mbody { display:flex; flex-direction:column; gap:3px; max-width:100%; }
-.bubble { padding:11px 14px; border-radius:7px; line-height:1.65; font-size:13px; }
-.msg.user .bubble { background:var(--surface); border:1px solid var(--border); color:var(--text); }
-.msg.bot  .bubble { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--eu-blue); color:var(--text); }
-.bubble h3 { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; color:var(--text); margin:11px 0 4px; text-transform:uppercase; letter-spacing:0.04em; }
-.bubble h3:first-child { margin-top:0; }
-.bubble p { margin-bottom:6px; }
-.bubble p:last-child { margin-bottom:0; }
-.bubble ul { margin:4px 0 6px 16px; }
-.bubble li { margin-bottom:3px; }
-.bubble strong { font-weight:600; }
+.msg { display: flex; gap: 10px; max-width: 680px; animation: in .2s ease both; }
+@keyframes in { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.msg.bot  { align-self: flex-start; }
 
-/* Verdicts */
-.vrd { display:inline-flex; align-items:center; padding:3px 9px; border-radius:4px; font-size:11px; font-weight:600; font-family:'Syne',sans-serif; letter-spacing:0.04em; text-transform:uppercase; margin:5px 0; }
-.v-red  { background:#FDECEA; border:1px solid #F5C6C2; color:var(--red); }
-.v-amb  { background:#FFF4E0; border:1px solid #F5D99A; color:var(--amber); }
-.v-tel  { background:#E6F4F2; border:1px solid #A8D8D4; color:var(--teal); }
-.v-grn  { background:#E8F5EE; border:1px solid #A8D8BC; color:var(--green); }
+.av {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.msg.user .av { background: var(--light); border: 1px solid var(--border); color: var(--muted); }
+.msg.bot  .av { background: #003399; color: #fff; font-size: 9px; }
 
-/* Article refs */
-.aref { display:inline-block; background:#EEF3FF; border:1px solid #C5D3F5; color:var(--eu-blue2); padding:1px 5px; border-radius:3px; font-size:10px; font-weight:600; font-family:'Syne',sans-serif; margin:0 1px; }
+.mbody { display: flex; flex-direction: column; gap: 3px; max-width: 100%; }
+.bubble {
+  padding: 10px 14px;
+  border-radius: 8px;
+  line-height: 1.65;
+  font-size: 13px;
+}
+.msg.user .bubble { background: var(--surface); border: 1px solid var(--border); }
+.msg.bot  .bubble { background: var(--surface); border: 1px solid var(--border); border-left: 2px solid #003399; }
 
-/* Sources */
-.srcs { margin-top:5px; padding:7px 11px; background:var(--light); border:1px solid var(--border); border-radius:5px; font-size:10px; color:var(--muted); }
+.bubble h3 { font-size: 11px; font-weight: 700; color: var(--text); margin: 10px 0 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+.bubble h3:first-child { margin-top: 0; }
+.bubble p { margin-bottom: 6px; }
+.bubble p:last-child { margin-bottom: 0; }
+.bubble ul { margin: 4px 0 6px 16px; }
+.bubble li { margin-bottom: 3px; }
+.bubble strong { font-weight: 600; }
+
+.vrd { display:inline-flex; align-items:center; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; margin:4px 0; }
+.v-red   { background:var(--red-lt);   border:1px solid #FECACA; color:var(--red); }
+.v-amb   { background:var(--amber-lt); border:1px solid #FDE68A; color:var(--amber); }
+.v-tel   { background:#F0FDFA;         border:1px solid #99F6E4; color:#0F766E; }
+.v-grn   { background:var(--green-lt); border:1px solid #A7F3D0; color:var(--green); }
+.aref { display:inline-block; background:var(--blue-lt); border:1px solid #C7D7F7; color:var(--blue); padding:1px 5px; border-radius:3px; font-size:10px; font-weight:600; margin:0 1px; }
+
+.srcs { margin-top:5px; padding:7px 10px; background:var(--light); border:1px solid var(--border); border-radius:5px; font-size:10px; color:var(--muted); }
 .srcs strong { display:block; font-size:9px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:4px; }
-.stag { display:inline-block; background:#EEF3FF; border:1px solid #C5D3F5; color:var(--eu-blue2); padding:1px 6px; border-radius:3px; font-size:9px; margin:1px; font-weight:500; }
+.stag { display:inline-block; background:var(--blue-lt); border:1px solid #C7D7F7; color:var(--blue); padding:1px 5px; border-radius:3px; font-size:9px; margin:1px; }
 
-/* Typing */
-.typing { display:flex; gap:4px; align-items:center; padding:11px 14px; }
+.typing { display:flex; gap:4px; align-items:center; padding:10px 14px; }
 .td { width:5px; height:5px; background:var(--muted); border-radius:50%; animation:td 1.2s infinite; }
 .td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
 @keyframes td { 0%,60%,100%{transform:translateY(0);opacity:.3} 30%{transform:translateY(-5px);opacity:1} }
 .mtime { font-size:10px; color:var(--muted); padding:0 2px; }
 .msg.user .mtime { text-align:right; }
 
-/* INPUT */
-#input-area { flex-shrink:0; padding:13px 32px 17px; background:var(--surface); border-top:1px solid var(--border); }
-.iw { display:flex; gap:8px; align-items:flex-end; background:var(--bg); border:1px solid var(--border); border-radius:7px; padding:8px 10px; transition:border-color .15s; }
-.iw:focus-within { border-color:var(--eu-blue2); }
-#user-input { flex:1; background:none; border:none; outline:none; color:var(--text); font-family:'Inter',sans-serif; font-size:13px; line-height:1.5; resize:none; max-height:100px; min-height:20px; }
-#user-input::placeholder { color:var(--muted); }
-#send-btn { width:31px; height:31px; background:var(--eu-blue); border:none; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; flex-shrink:0; color:#fff; font-size:13px; }
-#send-btn:hover { background:var(--eu-blue2); }
-#send-btn:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; }
-.ihint { margin-top:5px; text-align:center; font-size:10px; color:var(--muted); }
+/* Input */
+#input-area {
+  flex-shrink: 0;
+  padding: 12px 32px 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.iw {
+  display: flex; gap: 8px; align-items: flex-end;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  transition: border-color .15s;
+}
+.iw:focus-within { border-color: var(--blue); }
+#user-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; line-height: 1.5; resize: none;
+  max-height: 100px; min-height: 20px;
+}
+#user-input::placeholder { color: var(--muted); }
+#send-btn {
+  width: 30px; height: 30px;
+  background: #003399; border: none; border-radius: 5px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .15s; flex-shrink: 0; color: #fff; font-size: 13px;
+}
+#send-btn:hover { background: var(--blue); }
+#send-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+.ihint { margin-top: 5px; text-align: center; font-size: 10px; color: var(--muted); }
+
+/* Export button */
+#btn-export {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+  transition: all .15s;
+}
+#btn-export:hover { border-color: var(--blue); color: var(--blue); }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div id="header">
-  <div class="hd-stars">★★★★★★★★★★★★</div>
-  <div class="hd-sep"></div>
-  <div class="hd-title">EU AI Act — Compliance Checker</div>
+  <div class="logo">
+    <div class="logo-flag">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="2" fill="#FFCC00"/>
+        <circle cx="9" cy="4" r="1.2" fill="#FFCC00"/>
+        <circle cx="9" cy="14" r="1.2" fill="#FFCC00"/>
+        <circle cx="4" cy="9" r="1.2" fill="#FFCC00"/>
+        <circle cx="14" cy="9" r="1.2" fill="#FFCC00"/>
+        <circle cx="5.8" cy="5.8" r="1.1" fill="#FFCC00"/>
+        <circle cx="12.2" cy="5.8" r="1.1" fill="#FFCC00"/>
+        <circle cx="5.8" cy="12.2" r="1.1" fill="#FFCC00"/>
+        <circle cx="12.2" cy="12.2" r="1.1" fill="#FFCC00"/>
+      </svg>
+    </div>
+    <div class="logo-text">EU AI Act <span>Compliance</span></div>
+  </div>
+
+  <div id="tabs">
+    <button class="tab active" onclick="switchTab('eval')">Évaluer mes usages</button>
+    <button class="tab" onclick="switchTab('chat')">Assistant juridique</button>
+  </div>
+
   <div class="hd-right">
-    <span class="pill pill-w">Règlement 2024/1689</span>
-    <span class="pill pill-g">RAG actif</span>
+    <span class="badge">Règlement 2024/1689</span>
   </div>
 </div>
 
-<div id="main">
-  <div id="sidebar">
-    <div class="sb">
-      <div class="sb-lbl">Clé API Anthropic</div>
-      <div class="api-row">
-        <input type="password" id="apikey" placeholder="gsk_...">
-        <button class="btn-eye" onclick="toggleKey()">afficher</button>
-      </div>
-      <div class="api-hint" id="api-hint">Entrez votre clé pour activer le checker</div>
+<!-- PAGE ÉVALUATION -->
+<div id="page-eval" class="active">
+
+  <!-- Formulaire -->
+  <div id="eval-form-panel">
+    <div class="form-header">
+      <h2>Évaluez votre conformité</h2>
+      <p>Répondez aux questions suivantes pour obtenir une analyse de votre niveau de conformité EU AI Act.</p>
     </div>
 
-    <div class="sb">
-      <div class="sb-lbl">Niveaux de risque</div>
-      <div class="risk-rows">
-        <div class="risk-row" onclick="askQuick('Quels systèmes d\'IA sont strictement interdits par l\'EU AI Act ?')">
-          <div class="rdot" style="background:#C0392B"></div>
-          <div class="rname">Risque inacceptable</div>
-          <div class="rart">Art. 5</div>
+    <div class="form-body">
+
+      <div class="field">
+        <label>Clé API Groq (gratuite)</label>
+        <div class="api-row">
+          <input type="password" id="apikey-eval" placeholder="gsk_...">
+          <button class="btn-eye" onclick="toggleKey('apikey-eval')">voir</button>
         </div>
-        <div class="risk-row" onclick="askQuick('Quelles sont toutes les obligations pour un système d\'IA à haut risque ?')">
-          <div class="rdot" style="background:#C47A00"></div>
-          <div class="rname">Haut risque</div>
-          <div class="rart">Art. 6–17</div>
+        <div class="api-hint" id="api-hint-eval">Clé gratuite sur console.groq.com</div>
+      </div>
+
+      <div class="field">
+        <label>Secteur d'activité</label>
+        <select id="f-secteur">
+          <option value="">Sélectionnez votre secteur</option>
+          <option value="rh">Ressources humaines / Recrutement</option>
+          <option value="finance">Finance / Banque / Assurance</option>
+          <option value="sante">Santé / Médical</option>
+          <option value="education">Éducation / Formation</option>
+          <option value="transport">Transport / Logistique</option>
+          <option value="retail">Commerce / E-commerce</option>
+          <option value="tech">Technologie / SaaS</option>
+          <option value="industrie">Industrie / Manufacturing</option>
+          <option value="public">Secteur public / Administration</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Type de système d'IA utilisé</label>
+        <select id="f-type">
+          <option value="">Sélectionnez un type</option>
+          <option value="chatbot">Chatbot / Agent conversationnel</option>
+          <option value="recommandation">Système de recommandation</option>
+          <option value="scoring">Scoring / Évaluation automatique</option>
+          <option value="vision">Vision par ordinateur / Reconnaissance</option>
+          <option value="generation">IA générative (texte, image, audio)</option>
+          <option value="prediction">Modèle prédictif / Analytique</option>
+          <option value="classification">Classification / Tri automatique</option>
+          <option value="autre">Autre / Plusieurs</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Description de l'usage</label>
+        <div class="field-hint">Décrivez concrètement à quoi sert votre système d'IA</div>
+        <textarea id="f-usage" placeholder="Ex: Nous utilisons une IA pour analyser les CV et présélectionner automatiquement les candidats lors de nos recrutements..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>L'IA traite-t-elle ces types de données ?</label>
+        <div class="check-group" id="f-data-group">
+          <label class="check-item">
+            <input type="checkbox" value="personnelles"> Données personnelles (nom, email, adresse)
+          </label>
+          <label class="check-item">
+            <input type="checkbox" value="sensibles"> Données sensibles (santé, origine, opinions)
+            </label>
+          <label class="check-item">
+            <input type="checkbox" value="biometrie"> Données biométriques (visage, voix, empreintes)
+          </label>
+          <label class="check-item">
+            <input type="checkbox" value="comportement"> Données comportementales (navigation, habitudes)
+          </label>
+          <label class="check-item">
+            <input type="checkbox" value="aucune"> Aucune donnée personnelle
+          </label>
         </div>
-        <div class="risk-row" onclick="askQuick('Quelles sont les obligations de transparence pour les chatbots et l\'IA générative ?')">
-          <div class="rdot" style="background:#0E7C74"></div>
-          <div class="rname">Risque limité</div>
-          <div class="rart">Art. 50</div>
+      </div>
+
+      <div class="field">
+        <label>Impact des décisions de l'IA</label>
+        <select id="f-impact">
+          <option value="">Quel est l'impact sur les personnes ?</option>
+          <option value="faible">Faible — recommandation non contraignante</option>
+          <option value="moyen">Moyen — influence une décision humaine</option>
+          <option value="fort">Fort — décision automatique avec impact significatif</option>
+          <option value="critique">Critique — impact sur emploi, crédit, santé, liberté</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Taille de votre organisation</label>
+        <select id="f-taille">
+          <option value="">Sélectionnez</option>
+          <option value="tpe">TPE / Indépendant (moins de 10 personnes)</option>
+          <option value="pme">PME (10 à 249 personnes)</option>
+          <option value="eti">ETI (250 à 4999 personnes)</option>
+          <option value="grande">Grande entreprise (5000+)</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="form-footer">
+      <button id="btn-analyze" onclick="analyzeCompliance()">Analyser ma conformité</button>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div id="eval-result-panel">
+    <div id="result-empty">
+      <h3>Votre analyse apparaîtra ici</h3>
+      <p>Remplissez le formulaire à gauche pour obtenir une évaluation personnalisée de votre conformité EU AI Act.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Renseignez votre secteur, type d'IA et usage concret</div>
         </div>
-        <div class="risk-row" onclick="askQuick('Quels systèmes d\'IA sont à risque minimal et sans obligation spécifique ?')">
-          <div class="rdot" style="background:#0B8A5E"></div>
-          <div class="rname">Risque minimal</div>
-          <div class="rart">Considérants 43–47</div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">L'outil analyse les articles applicables du règlement</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Recevez un score, vos obligations et un plan d'action</div>
         </div>
       </div>
     </div>
+    <div id="result-content" style="display:none; flex-direction:column; gap:20px;"></div>
+  </div>
 
-    <div class="sb">
-      <div class="sb-lbl">Questions fréquentes</div>
-      <div class="quick-rows">
-        <button class="qbtn" onclick="askQuick('Notre outil IA analyse les CV pour présélectionner des candidats. Sommes-nous conformes ?')">Outil de recrutement IA</button>
-        <button class="qbtn" onclick="askQuick('Notre chatbot IA sur notre site web. Quelles obligations s\'appliquent ?')">Chatbot service client</button>
-        <button class="qbtn" onclick="askQuick('Nous utilisons l\'API OpenAI ou Claude en interne. Sommes-nous concernés ?')">Usage interne de LLM</button>
-        <button class="qbtn" onclick="askQuick('Quelles sont les amendes prévues par l\'EU AI Act ?')">Sanctions et amendes</button>
-        <button class="qbtn" onclick="askQuick('Quand les obligations EU AI Act entrent-elles en vigueur ?')">Calendrier d'application</button>
+</div>
+
+<!-- PAGE CHATBOT -->
+<div id="page-chat">
+
+  <div id="chat-sidebar">
+    <div class="cs-section">
+      <h4>Clé API Groq</h4>
+      <div class="api-wrap">
+        <div class="api-row">
+          <input type="password" id="apikey" placeholder="gsk_...">
+          <button class="btn-eye" onclick="toggleKey('apikey')">voir</button>
+        </div>
+        <div class="api-hint" id="api-hint">console.groq.com — gratuit</div>
       </div>
     </div>
 
-    <div class="sb-foot">
-      Base documentaire : EU AI Act (Règlement 2024/1689/UE)<br>
+    <div id="eval-context-box">
+      <strong>Contexte de votre évaluation</strong>
+      <span id="eval-context-text"></span>
+    </div>
+
+    <div class="cs-section">
+      <h4>Questions fréquentes</h4>
+      <div class="qbtns">
+        <button class="qbtn" onclick="ask('Notre outil IA analyse les CV pour présélectionner des candidats. Sommes-nous conformes ?')">Recrutement IA et conformité</button>
+        <button class="qbtn" onclick="ask('Notre chatbot IA sur notre site. Quelles obligations ?')">Chatbot — obligations</button>
+        <button class="qbtn" onclick="ask('Nous utilisons l\'API OpenAI en interne. Sommes-nous concernés par l\'EU AI Act ?')">Usage interne de LLM</button>
+        <button class="qbtn" onclick="ask('Quelles sont les amendes EU AI Act ?')">Sanctions et amendes</button>
+        <button class="qbtn" onclick="ask('Quand les obligations EU AI Act entrent-elles en vigueur ?')">Calendrier d'application</button>
+        <button class="qbtn" onclick="ask('Générez-moi une checklist de conformité EU AI Act pour mon DPO')">Checklist pour mon DPO</button>
+      </div>
+    </div>
+
+    <div class="chat-foot">
+      EU AI Act — Règlement 2024/1689/UE<br>
       <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689" target="_blank">Source EUR-Lex officielle</a>
     </div>
   </div>
 
-  <div id="chat">
+  <div id="chat-main">
     <div id="messages">
       <div id="welcome">
-        <h2>Vérifiez votre conformité<br><span>EU AI Act</span></h2>
-        <p>Décrivez votre système d'IA ou posez une question.<br>L'outil identifie votre niveau de risque et liste les obligations applicables avec les articles précis du règlement.</p>
+        <h2>Assistant juridique<br>EU AI Act</h2>
+        <p>Posez vos questions sur la conformité de vos systèmes d'IA. Je cite les articles exacts du règlement et propose des plans d'action concrets.</p>
         <div class="chips">
-          <span class="chip" onclick="askQuick('Nous développons un outil IA pour analyser les CV et présélectionner des candidats. Sommes-nous conformes ?')">Recrutement IA</span>
-          <span class="chip" onclick="askQuick('Notre chatbot IA sur un site e-commerce. Quelles obligations ?')">Chatbot e-commerce</span>
-          <span class="chip" onclick="askQuick('Notre banque utilise un algorithme IA pour scorer la solvabilité des clients.')">Scoring bancaire</span>
-          <span class="chip" onclick="askQuick('Nous créons un outil d\'IA générative pour générer des images marketing.')">IA générative</span>
-          <span class="chip" onclick="askQuick('Notre startup développe une IA de diagnostic médical.')">IA médicale</span>
-          <span class="chip" onclick="askQuick('Nous sommes une PME qui utilise l\'API ChatGPT pour notre logiciel B2B.')">PME et API IA</span>
+          <span class="chip" onclick="ask('Nous développons un outil IA pour analyser les CV. Sommes-nous conformes ?')">Recrutement IA</span>
+          <span class="chip" onclick="ask('Notre chatbot IA sur un site e-commerce. Quelles obligations ?')">Chatbot e-commerce</span>
+          <span class="chip" onclick="ask('Notre banque utilise une IA pour scorer la solvabilité des clients.')">Scoring bancaire</span>
+          <span class="chip" onclick="ask('Nous créons un outil d\'IA générative pour générer des images.')">IA générative</span>
+          <span class="chip" onclick="ask('Notre startup développe une IA de diagnostic médical.')">IA médicale</span>
+          <span class="chip" onclick="ask('Nous sommes une PME qui utilise l\'API ChatGPT pour notre logiciel.')">PME et API IA</span>
         </div>
       </div>
     </div>
 
     <div id="input-area">
       <div class="iw">
-        <textarea id="user-input" placeholder="Décrivez votre système d'IA ou posez une question sur la conformité EU AI Act..." rows="1"></textarea>
+        <textarea id="user-input" placeholder="Posez une question sur la conformité EU AI Act..." rows="1"></textarea>
         <button id="send-btn" onclick="sendMessage()">&#10148;</button>
       </div>
       <div class="ihint">Entrée pour envoyer &middot; Maj+Entrée pour nouvelle ligne</div>
     </div>
   </div>
+
 </div>
 
 <script>
+// ── CHUNKS ──────────────────────────────────
 let CHUNKS = [];
 async function loadChunks() {
   try { const r = await fetch('./euaiact_chunks.json'); CHUNKS = await r.json(); }
@@ -247,7 +943,7 @@ function tokenize(t) {
 }
 const STOP = new Set(['les','des','une','pour','par','sur','dans','avec','qui','que','est','son','ses','leur','leurs','mais','donc','ainsi','comme','plus','cette','cela','avoir','être','faire','peut','doit','doivent','sont','tous','toute']);
 
-function score(chunk, query) {
+function scoreChunk(chunk, query) {
   const qt = tokenize(query).filter(t=>!STOP.has(t));
   if (!qt.length) return 0;
   const ct = tokenize([chunk.texte,chunk.titre,chunk.article,...(chunk.tags||[])].join(' '));
@@ -259,33 +955,219 @@ function score(chunk, query) {
   }
   return s/qt.length;
 }
-
 function retrieve(query,k=6) {
-  return CHUNKS.map(c=>({chunk:c,score:score(c,query)})).filter(s=>s.score>0).sort((a,b)=>b.score-a.score).slice(0,k);
+  return CHUNKS.map(c=>({chunk:c,score:scoreChunk(c,query)})).filter(s=>s.score>0).sort((a,b)=>b.score-a.score).slice(0,k);
 }
 
-function toggleKey() {
-  const i=document.getElementById('apikey'); i.type=i.type==='password'?'text':'password';
+// ── TABS ────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active', (i===0&&tab==='eval')||(i===1&&tab==='chat')));
+  document.getElementById('page-eval').classList.toggle('active', tab==='eval');
+  document.getElementById('page-chat').classList.toggle('active', tab==='chat');
 }
+
+// ── API KEY ──────────────────────────────────
+function toggleKey(id) {
+  const i=document.getElementById(id); i.type=i.type==='password'?'text':'password';
+}
+function syncKeys() {
+  const v1=document.getElementById('apikey-eval').value;
+  const v2=document.getElementById('apikey').value;
+  if(v1&&!v2) document.getElementById('apikey').value=v1;
+  if(v2&&!v1) document.getElementById('apikey-eval').value=v2;
+}
+document.getElementById('apikey-eval').addEventListener('input',function(){
+  const h=document.getElementById('api-hint-eval');
+  h.textContent=this.value.startsWith('gsk_')?'Clé reconnue':this.value.length?'Format inattendu':'Clé gratuite sur console.groq.com';
+  h.className='api-hint'+(this.value.startsWith('gsk_')?' ok':this.value.length?' err':'');
+  document.getElementById('apikey').value=this.value;
+});
 document.getElementById('apikey').addEventListener('input',function(){
   const h=document.getElementById('api-hint');
-  if(this.value.startsWith('gsk_')){h.textContent='Clé Groq reconnue';h.className='api-hint ok';}
-  else if(this.value.length){h.textContent='Format inattendu';h.className='api-hint err';}
-  else{h.textContent='Entrez votre clé pour activer le checker';h.className='api-hint';}
+  h.textContent=this.value.startsWith('gsk_')?'Clé reconnue':this.value.length?'Format inattendu':'console.groq.com — gratuit';
+  h.className='api-hint'+(this.value.startsWith('gsk_')?' ok':this.value.length?' err':'');
+  document.getElementById('apikey-eval').value=this.value;
 });
 
-const history=[];
-let loading=false;
-const msgs=document.getElementById('messages');
-const inp=document.getElementById('user-input');
-const btn=document.getElementById('send-btn');
+// ── GROQ API ─────────────────────────────────
+async function callGroq(key, system, messages) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+    body: JSON.stringify({
+      model:'llama-3.3-70b-versatile',
+      max_tokens:1500,
+      messages:[{role:'system',content:system},...messages]
+    })
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.choices[0].message.content;
+}
 
-function hideWelcome(){document.getElementById('welcome')?.remove();}
-function getTime(){return new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}
+// ── ÉVALUATION ───────────────────────────────
+let evalResult = null;
 
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+async function analyzeCompliance() {
+  const key = document.getElementById('apikey-eval').value.trim();
+  if(!key) { alert('Entrez votre clé API Groq (gratuite sur console.groq.com)'); return; }
 
-function fmt(text){
+  const secteur = document.getElementById('f-secteur').value;
+  const type    = document.getElementById('f-type').value;
+  const usage   = document.getElementById('f-usage').value.trim();
+  const impact  = document.getElementById('f-impact').value;
+  const taille  = document.getElementById('f-taille').value;
+
+  if(!secteur||!type||!usage||!impact||!taille) {
+    alert('Veuillez remplir tous les champs du formulaire.'); return;
+  }
+
+  const dataChecked = [...document.querySelectorAll('#f-data-group input:checked')].map(i=>i.value);
+
+  // Show loading
+  document.getElementById('result-empty').style.display='none';
+  const rc = document.getElementById('result-content');
+  rc.style.display='flex';
+  rc.innerHTML=`<div class="loading-state"><div class="spinner"></div><p>Analyse en cours...</p></div>`;
+  document.getElementById('btn-analyze').disabled=true;
+
+  const query = `${secteur} ${type} ${usage} ${impact} ${dataChecked.join(' ')}`;
+  const retrieved = retrieve(query, 7);
+  const ctx = retrieved.map(r=>`--- ${r.chunk.article}: ${r.chunk.titre} ---\n${r.chunk.texte}`).join('\n\n');
+
+  const systemPrompt = `Tu es un expert juridique EU AI Act. Analyse la conformité de ce système d'IA.
+
+EXTRAITS EU AI ACT PERTINENTS:
+${ctx}
+
+Réponds UNIQUEMENT en JSON valide avec cette structure exacte:
+{
+  "score": <nombre 0-100>,
+  "niveau_risque": "<RISQUE INACCEPTABLE|HAUT RISQUE|RISQUE LIMITÉ|RISQUE MINIMAL>",
+  "verdict": "<phrase courte de 1-2 phrases résumant la situation>",
+  "obligations": [
+    {"texte": "<obligation>", "article": "<Article X>", "urgent": <true|false>}
+  ],
+  "plan_action": [
+    {"titre": "<titre étape>", "description": "<description courte>"}
+  ],
+  "resume": "<paragraphe de synthèse 2-3 phrases>"
+}
+
+Sois précis sur les articles. Pour les PME, adapte les obligations. Le score reflète le niveau de conformité actuel (0=non conforme, 100=pleinement conforme). Réponds UNIQUEMENT avec le JSON, pas d'autre texte.`;
+
+  const userMsg = `Secteur: ${secteur}\nType d'IA: ${type}\nUsage: ${usage}\nDonnées traitées: ${dataChecked.join(', ')||'non précisé'}\nImpact: ${impact}\nTaille: ${taille}`;
+
+  try {
+    const reply = await callGroq(key, systemPrompt, [{role:'user',content:userMsg}]);
+    const clean = reply.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+    const data = JSON.parse(clean);
+    evalResult = { ...data, secteur, type, usage, taille };
+    renderResult(data);
+
+    // Pre-fill chatbot context
+    document.getElementById('eval-context-text').textContent = `${secteur} — ${type} — ${data.niveau_risque}`;
+    document.getElementById('eval-context-box').style.display='block';
+
+  } catch(err) {
+    rc.innerHTML=`<div class="result-card"><div class="result-card-body"><p style="color:var(--red)">Erreur : ${err.message}</p></div></div>`;
+  }
+  document.getElementById('btn-analyze').disabled=false;
+}
+
+function renderResult(data) {
+  const rc = document.getElementById('result-content');
+
+  const scoreColor = data.score>=70?'var(--green)':data.score>=40?'var(--amber)':'var(--red)';
+  const riskClass  = data.niveau_risque.includes('INACCEPTABLE')?'rb-red':data.niveau_risque.includes('HAUT')?'rb-amber':data.niveau_risque.includes('LIMITÉ')?'rb-teal':'rb-green';
+
+  const obligHtml = data.obligations.map(o=>`
+    <div class="oblig-item" style="${o.urgent?'border-color:#FDE68A;background:var(--amber-lt)':''}">
+      <div class="oblig-icon">${o.urgent?'⚠':'○'}</div>
+      <div class="oblig-text">${o.texte}</div>
+      <div class="oblig-art">${o.article}</div>
+    </div>`).join('');
+
+  const planHtml = data.plan_action.map((p,i)=>`
+    <div class="plan-item">
+      <div class="plan-num">${i+1}</div>
+      <div class="plan-content">
+        <div class="plan-title">${p.titre}</div>
+        <div class="plan-desc">${p.description}</div>
+      </div>
+    </div>`).join('');
+
+  rc.innerHTML=`
+    <div class="score-section">
+      <div class="score-circle-wrap">
+        <div class="score-circle" style="border-color:${scoreColor}">
+          <div class="score-num" style="color:${scoreColor}">${data.score}</div>
+          <div class="score-lbl">/ 100</div>
+        </div>
+      </div>
+      <div class="score-info">
+        <div class="risk-badge ${riskClass}">${data.niveau_risque}</div>
+        <p>${data.verdict}</p>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-header">
+        <h3>Niveau de conformité</h3>
+      </div>
+      <div class="result-card-body">
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Conformité actuelle</span><span style="color:${scoreColor};font-weight:600">${data.score}%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:${data.score}%;background:${scoreColor}"></div></div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:10px">${data.resume}</p>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-header">
+        <h3>Obligations applicables</h3>
+      </div>
+      <div class="result-card-body">
+        <div class="oblig-list">${obligHtml}</div>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-header">
+        <h3>Plan d'action recommandé</h3>
+      </div>
+      <div class="result-card-body">
+        <div class="plan-list">${planHtml}</div>
+      </div>
+    </div>
+
+    <button id="btn-to-chat" onclick="goToChat()">Approfondir avec l'assistant juridique</button>
+  `;
+}
+
+function goToChat() {
+  switchTab('chat');
+  if(evalResult) {
+    const ctx = `Mon contexte : secteur ${evalResult.secteur}, type d'IA ${evalResult.type}, usage : ${evalResult.usage}. Niveau de risque identifié : ${evalResult.niveau_risque}. Score de conformité : ${evalResult.score}/100.`;
+    chatContext = ctx;
+    document.getElementById('user-input').placeholder='Posez une question sur votre analyse...';
+  }
+}
+
+// ── CHATBOT ──────────────────────────────────
+const history = [];
+let loading   = false;
+let chatContext = '';
+const msgs    = document.getElementById('messages');
+const inp     = document.getElementById('user-input');
+const sndBtn  = document.getElementById('send-btn');
+
+function hideWelcome(){ document.getElementById('welcome')?.remove(); }
+function getTime(){ return new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
+function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function fmt(text) {
   text=text.replace(/\*\*RISQUE INACCEPTABLE\*\*/gi,'<span class="vrd v-red">Risque inacceptable</span>');
   text=text.replace(/\*\*HAUT RISQUE\*\*/gi,'<span class="vrd v-amb">Haut risque</span>');
   text=text.replace(/\*\*RISQUE LIMITÉ\*\*/gi,'<span class="vrd v-tel">Risque limité</span>');
@@ -303,58 +1185,51 @@ function fmt(text){
   return text;
 }
 
-function addMsg(role,content,sources=[]){
+function addMsg(role, content, sources=[]) {
   hideWelcome();
-  const msg=document.createElement('div');
-  msg.className=`msg ${role==='user'?'user':'bot'}`;
-  const av=document.createElement('div');
-  av.className='av';
-  av.textContent=role==='user'?'Vous':'EU';
-  const body=document.createElement('div');
-  body.className='mbody';
-  const bubble=document.createElement('div');
-  bubble.className='bubble';
+  const msg=document.createElement('div'); msg.className=`msg ${role==='user'?'user':'bot'}`;
+  const av=document.createElement('div'); av.className='av'; av.textContent=role==='user'?'Vous':'EU';
+  const body=document.createElement('div'); body.className='mbody';
+  const bubble=document.createElement('div'); bubble.className='bubble';
   bubble.innerHTML=role==='user'?esc(content):fmt(content);
   body.appendChild(bubble);
   if(role!=='user'&&sources.length){
-    const s=document.createElement('div');
-    s.className='srcs';
+    const s=document.createElement('div'); s.className='srcs';
     s.innerHTML=`<strong>Sources consultées</strong>`+sources.map(s=>`<span class="stag">${s.chunk.article}</span>`).join('');
     body.appendChild(s);
   }
-  const t=document.createElement('div');
-  t.className='mtime';t.textContent=getTime();
+  const t=document.createElement('div'); t.className='mtime'; t.textContent=getTime();
   body.appendChild(t);
-  msg.appendChild(av);msg.appendChild(body);
-  msgs.appendChild(msg);
-  msgs.scrollTop=msgs.scrollHeight;
+  msg.appendChild(av); msg.appendChild(body);
+  msgs.appendChild(msg); msgs.scrollTop=msgs.scrollHeight;
 }
 
 function addTyping(){
-  const msg=document.createElement('div');
-  msg.className='msg bot';msg.id='typing';
+  const msg=document.createElement('div'); msg.className='msg bot'; msg.id='typing';
   msg.innerHTML=`<div class="av">EU</div><div class="mbody"><div class="bubble"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div></div>`;
-  msgs.appendChild(msg);msgs.scrollTop=msgs.scrollHeight;
+  msgs.appendChild(msg); msgs.scrollTop=msgs.scrollHeight;
 }
-function rmTyping(){document.getElementById('typing')?.remove();}
+function rmTyping(){ document.getElementById('typing')?.remove(); }
 
-async function sendMessage(override){
-  const key=document.getElementById('apikey').value.trim();
-  if(!key){alert('Entrez votre clé API Anthropic dans le panneau de gauche.');return;}
-  const text=override||inp.value.trim();
-  if(!text||loading)return;
-  inp.value='';inp.style.height='auto';
-  loading=true;btn.disabled=true;
-  addMsg('user',text);addTyping();
-  const retrieved=retrieve(text,6);
-  const ctx=retrieved.length?retrieved.map(r=>`--- ${r.chunk.article}: ${r.chunk.titre} ---\n${r.chunk.texte}`).join('\n\n'):'Répondre sur la base des connaissances générales de l\'EU AI Act.';
+async function sendMessage(override) {
+  const key = document.getElementById('apikey').value.trim();
+  if(!key){ alert('Entrez votre clé API Groq dans le panneau de gauche.'); return; }
+  const text = override||inp.value.trim();
+  if(!text||loading) return;
+  inp.value=''; inp.style.height='auto';
+  loading=true; sndBtn.disabled=true;
+  addMsg('user',text); addTyping();
+
+  const retrieved = retrieve(text,6);
+  const ctx = retrieved.length?retrieved.map(r=>`--- ${r.chunk.article}: ${r.chunk.titre} ---\n${r.chunk.texte}`).join('\n\n'):'Répondre sur la base des connaissances générales de l\'EU AI Act.';
+
   const system=`Tu es un expert juridique spécialisé dans l'EU AI Act (Règlement 2024/1689/UE).
-
-EXTRAITS PERTINENTS :
+${chatContext?`\nCONTEXTE DE L'ENTREPRISE:\n${chatContext}\n`:''}
+EXTRAITS PERTINENTS EU AI ACT:
 ${ctx}
 
-INSTRUCTIONS :
-1. Commence par classifier : **RISQUE INACCEPTABLE**, **HAUT RISQUE**, **RISQUE LIMITÉ**, ou **RISQUE MINIMAL**
+INSTRUCTIONS:
+1. Classe le risque: **RISQUE INACCEPTABLE**, **HAUT RISQUE**, **RISQUE LIMITÉ**, ou **RISQUE MINIMAL**
 2. Cite les articles exacts
 3. Pour les systèmes à haut risque, liste toutes les obligations
 4. Termine par un plan d'action numéroté et concret
@@ -364,33 +1239,29 @@ Réponds en français. Sois précis et orienté solutions.`;
 
   history.push({role:'user',content:text});
   try {
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:1500,messages:[{role:'system',content:system},...history]})
-    });
-    const data=await res.json();
-    if(data.error)throw new Error(data.error.message);
-    const reply=data.choices[0].message.content;
+    const reply = await callGroq(key, system, history);
     history.push({role:'assistant',content:reply});
-    rmTyping();addMsg('assistant',reply,retrieved);
+    rmTyping(); addMsg('assistant',reply,retrieved);
   } catch(err){
-    rmTyping();addMsg('assistant',`Erreur : ${err.message}\n\nVérifiez votre clé API.`);
+    rmTyping(); addMsg('assistant',`Erreur : ${err.message}\n\nVérifiez votre clé API Groq.`);
   }
-  loading=false;btn.disabled=false;
+  loading=false; sndBtn.disabled=false;
 }
 
-function askQuick(q){sendMessage(q);}
+function ask(q){ switchTab('chat'); setTimeout(()=>sendMessage(q),100); }
 
-inp.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
-inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+inp.addEventListener('input',function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,100)+'px'; });
+inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} });
 
+// ── FALLBACK CHUNKS ──────────────────────────
 function fallback(){return[
-  {id:'art5',article:'Article 5',titre:'Pratiques interdites',tags:['interdit','scoring social','biométrique'],texte:'Sont interdits: techniques subliminales, notation sociale par autorités, identification biométrique temps réel dans espaces publics, inférence des émotions au travail.'},
-  {id:'art6_rh',article:'Article 6 + Annexe III §4',titre:'Haut risque — Emploi',tags:['haut risque','recrutement','RH','CV','candidat'],texte:'Classés haut risque: systèmes IA pour le recrutement, filtrage de candidatures, décisions conditions de travail, promotions, licenciements, surveillance des performances.'},
-  {id:'art50',article:'Article 50',titre:'Obligations de transparence',tags:['transparence','chatbot','IA générative'],texte:'Chatbots: informer qu\'ils sont une IA. IA générative: marquer le contenu. Obligation divulgation deepfakes.'},
-  {id:'art70',article:'Articles 70-72',titre:'Sanctions',tags:['amende','violation'],texte:'Pratiques interdites: jusqu\'à 35M€ ou 7% CA. Non-conformité haut risque: jusqu\'à 15M€ ou 3% CA.'},
-  {id:'art101',article:'Article 101',titre:'Calendrier',tags:['calendrier','2025','2026'],texte:'Août 2024: entrée en vigueur. Février 2025: interdictions. Août 2025: obligations GPAI. Août 2026: obligations haut risque.'}
+  {id:'art5',article:'Article 5',titre:'Pratiques interdites',tags:['interdit','scoring social','biométrique'],texte:'Sont interdits: techniques subliminales, notation sociale par autorités publiques, identification biométrique en temps réel dans espaces publics, inférence des émotions au travail, catégorisation biométrique révélant des données sensibles.'},
+  {id:'art6_rh',article:'Article 6 + Annexe III §4',titre:'Haut risque — Emploi',tags:['haut risque','recrutement','RH','CV','candidat','promotion','licenciement'],texte:'Classés haut risque: systèmes IA pour le recrutement, filtrage de candidatures, décisions conditions de travail, promotions, licenciements, surveillance des performances.'},
+  {id:'art9',article:'Article 9',titre:'Gestion des risques',tags:['haut risque','gestion risques','obligation'],texte:'Les fournisseurs de systèmes à haut risque doivent établir un système de gestion des risques tout au long du cycle de vie.'},
+  {id:'art14',article:'Article 14',titre:'Contrôle humain',tags:['contrôle humain','supervision','haut risque'],texte:'Les systèmes à haut risque doivent permettre un contrôle humain effectif. La décision finale doit rester humaine.'},
+  {id:'art50',article:'Article 50',titre:'Obligations de transparence',tags:['transparence','chatbot','IA générative','risque limité'],texte:'Chatbots: informer qu\'ils sont une IA. IA générative: marquer le contenu. Obligation divulgation deepfakes.'},
+  {id:'art70',article:'Articles 70-72',titre:'Sanctions',tags:['amende','violation','sanction'],texte:'Pratiques interdites: jusqu\'à 35M€ ou 7% CA. Non-conformité haut risque: jusqu\'à 15M€ ou 3% CA. Informations incorrectes: jusqu\'à 7,5M€ ou 1,5% CA.'},
+  {id:'art101',article:'Article 101',titre:'Calendrier',tags:['calendrier','2025','2026'],texte:'Août 2024: entrée en vigueur. Février 2025: interdictions applicables. Août 2025: obligations GPAI. Août 2026: obligations haut risque.'}
 ];}
 
 loadChunks();
