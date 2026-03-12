@@ -1146,12 +1146,69 @@ function renderResult(data) {
   `;
 }
 
-function goToChat() {
+async function goToChat() {
   switchTab('chat');
-  if(evalResult) {
-    const ctx = `Mon contexte : secteur ${evalResult.secteur}, type d'IA ${evalResult.type}, usage : ${evalResult.usage}. Niveau de risque identifié : ${evalResult.niveau_risque}. Score de conformité : ${evalResult.score}/100.`;
-    chatContext = ctx;
-    document.getElementById('user-input').placeholder='Posez une question sur votre analyse...';
+  if(!evalResult) return;
+
+  const key = document.getElementById('apikey-eval').value.trim();
+
+  // Build rich context from evaluation
+  const obligList = evalResult.obligations.map(o=>`- ${o.texte} (${o.article})`).join('\n');
+  const planList  = evalResult.plan_action.map((p,i)=>`${i+1}. ${p.titre}: ${p.description}`).join('\n');
+
+  chatContext = `ÉVALUATION COMPLÈTE DE L'ENTREPRISE:
+Secteur: ${evalResult.secteur}
+Type d'IA: ${evalResult.type}
+Usage: ${evalResult.usage}
+Taille: ${evalResult.taille}
+Niveau de risque: ${evalResult.niveau_risque}
+Score de conformité: ${evalResult.score}/100
+Verdict: ${evalResult.verdict}
+Obligations identifiées:
+${obligList}
+Plan d'action proposé:
+${planList}`;
+
+  document.getElementById('user-input').placeholder = 'Posez une question sur votre plan d\'action...';
+
+  // Auto-start chatbot with proactive message
+  if(!key) {
+    // No key yet — show a static intro message
+    hideWelcome();
+    addMsg('assistant', `**Analyse reçue — Score ${evalResult.score}/100**\n\n${evalResult.verdict}\n\nVotre niveau de risque est **${evalResult.niveau_risque}**. Pour construire votre plan d'action personnalisé, entrez votre clé API Groq dans le panneau de gauche et je vous poserai quelques questions pour approfondir l'analyse.`);
+    return;
+  }
+
+  // Has key — generate proactive opening message
+  hideWelcome();
+  addTyping();
+
+  const retrieved = retrieve(evalResult.usage + ' ' + evalResult.secteur, 5);
+  const ctx = retrieved.map(r=>`--- ${r.chunk.article}: ${r.chunk.titre} ---\n${r.chunk.texte}`).join('\n\n');
+
+  const system = `Tu es un expert juridique EU AI Act. Tu viens de réaliser une évaluation de conformité pour une entreprise.
+
+RÉSULTATS DE L'ÉVALUATION:
+${chatContext}
+
+EXTRAITS EU AI ACT PERTINENTS:
+${ctx}
+
+Tu dois maintenant engager une conversation pour approfondir l'analyse et construire un plan d'action détaillé. 
+Commence par:
+1. Un bref résumé de ce que tu as compris de leur situation (2-3 phrases max)
+2. Identifier les 2-3 points les plus urgents ou flous qui nécessitent clarification
+3. Poser UNE seule question précise et ouverte pour commencer à approfondir
+Sois conversationnel, pas trop formel. Réponds en français.`;
+
+  try {
+    const reply = await callGroq(key, system, [{role:'user', content:'Démarre la conversation de suivi.'}]);
+    rmTyping();
+    addMsg('assistant', reply, retrieved);
+    history.push({role:'assistant', content:reply});
+  } catch(err) {
+    rmTyping();
+    addMsg('assistant', `**Analyse reçue — Score ${evalResult.score}/100**\n\n${evalResult.verdict}\n\nNiveau de risque : **${evalResult.niveau_risque}**\n\nPosez-moi vos questions pour approfondir votre plan d'action.`);
   }
 }
 
@@ -1224,18 +1281,19 @@ async function sendMessage(override) {
   const ctx = retrieved.length?retrieved.map(r=>`--- ${r.chunk.article}: ${r.chunk.titre} ---\n${r.chunk.texte}`).join('\n\n'):'Répondre sur la base des connaissances générales de l\'EU AI Act.';
 
   const system=`Tu es un expert juridique spécialisé dans l'EU AI Act (Règlement 2024/1689/UE).
-${chatContext?`\nCONTEXTE DE L'ENTREPRISE:\n${chatContext}\n`:''}
+${chatContext?`\nCONTEXTE DE L'ENTREPRISE (évaluation réalisée):\n${chatContext}\n\nTu connais déjà leur situation. Utilise ce contexte pour:\n- Approfondir les points flous avec des questions ciblées\n- Adapter tes recommandations à leur secteur et taille\n- Construire progressivement un plan d'action détaillé\n- Quand tu as assez d'infos, proposer un plan d'action complet et structuré\n`:''}
 EXTRAITS PERTINENTS EU AI ACT:
 ${ctx}
 
 INSTRUCTIONS:
-1. Classe le risque: **RISQUE INACCEPTABLE**, **HAUT RISQUE**, **RISQUE LIMITÉ**, ou **RISQUE MINIMAL**
-2. Cite les articles exacts
-3. Pour les systèmes à haut risque, liste toutes les obligations
-4. Termine par un plan d'action numéroté et concret
-5. Mentionne le calendrier si pertinent (février 2025, août 2025, août 2026)
-6. Pour les PME, mentionne les dispositifs allégés si applicable
-Réponds en français. Sois précis et orienté solutions.`;
+1. Si tu as le contexte de l'évaluation, utilise-le — ne redemande pas ce qui est déjà connu
+2. Pose des questions ciblées pour clarifier les points flous (une question à la fois)
+3. Cite les articles exacts du règlement
+4. Quand l'utilisateur demande un plan d'action, génère un plan structuré et complet avec priorités et délais
+5. Classe le risque si pas encore fait: **RISQUE INACCEPTABLE**, **HAUT RISQUE**, **RISQUE LIMITÉ**, **RISQUE MINIMAL**
+6. Mentionne le calendrier si pertinent (février 2025, août 2025, août 2026)
+7. Pour les PME, mentionne les dispositifs allégés
+Réponds en français. Sois conversationnel et orienté solutions.`;
 
   history.push({role:'user',content:text});
   try {
